@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Vector;
 
+// 벡터로 받아서 저장
 public class EventQueue implements Serializable
 {
     private static final long serialVersionUID = 1L; // Default value for Serializable interface

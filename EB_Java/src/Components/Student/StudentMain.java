@@ -41,6 +41,10 @@ public class StudentMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, registerStudent(studentsList, event.getMessage())));
 					break;
+				case DeleteStudents:
+					printLogEvent("Get", event);
+					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteStudent(studentsList, event.getMessage())));
+					break;
 				case QuitTheSystem:
 					printLogEvent("Get", event);
 					eventBus.unRegister(componentId);
@@ -52,6 +56,14 @@ public class StudentMain {
 			}
 		}
 	}
+	private static String deleteStudent(StudentComponent studentsList, String studentId) {
+		for (int i = 0; i < studentsList.vStudent.size(); i++) {
+			Student student = (Student) studentsList.vStudent.get(i);
+			if (student.match(studentId) && studentsList.vStudent.remove(student)) return "성공";
+		} 
+		return "실패";
+	}
+
 	private static String registerStudent(StudentComponent studentsList, String message) {
 		Student  student = new Student(message);
 		if (!studentsList.isRegisteredStudent(student.studentId)) {
