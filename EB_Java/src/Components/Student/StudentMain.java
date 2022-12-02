@@ -59,9 +59,8 @@ public class StudentMain {
 	private static String deleteStudent(StudentComponent studentsList, String studentId) {
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {
 			Student student = (Student) studentsList.vStudent.get(i);
-			if (student.match(studentId) && studentsList.vStudent.remove(student)) return "성공";
-		} 
-		return "실패";
+			if (student.match(studentId) && studentsList.vStudent.remove(student)) return studentId+" 학생을 삭제했습니다.";
+		} return "존재하지 않는 studentId 입니다.";
 	}
 
 	private static String registerStudent(StudentComponent studentsList, String message) {

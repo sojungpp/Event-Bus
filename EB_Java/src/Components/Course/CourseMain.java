@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 
+import Components.Student.Student;
+import Components.Student.StudentComponent;
 import Framework.Event;
 import Framework.EventId;
 import Framework.EventQueue;
@@ -44,11 +46,21 @@ public class CourseMain {
 					eventBus.unRegister(componentId);
 					done = true;
 					break;
+				case DeleteCourses:
+					printLogEvent("Get", event);
+					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteCourse(coursesList, event.getMessage())));
+					break;
 				default:
 					break;
 				}
 			}
 		}
+	}
+	private static String deleteCourse(CourseComponent coursesList, String courseId) {
+		for (int i = 0; i < coursesList.vCourse.size(); i++) {
+			Course course = (Course) coursesList.vCourse.get(i);
+			if (course.match(courseId) && coursesList.vCourse.remove(course)) return courseId+" 과목을 삭제했습니다.";
+		}  return "존재하지 않는 courseId 입니다.";
 	}
 	private static String registerCourse(CourseComponent coursesList, String message) {
 		Course course = new Course(message);
