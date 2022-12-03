@@ -50,6 +50,10 @@ public class ClientInputMain {
 					eventBus.sendEvent(new Event(EventId.DeleteCourses, deleteCourseInfo()));
 					printLogSend(EventId.DeleteCourses);
 					break;
+				case "7":
+					eventBus.sendEvent(new Event(EventId.RegisterClass, registerClass()));
+					printLogSend(EventId.RegisterClass);
+					break;
 				case "0":
 					eventBus.sendEvent(new Event(EventId.QuitTheSystem, "Quit the system!!!"));
 					printLogSend(EventId.QuitTheSystem);
@@ -111,6 +115,15 @@ public class ClientInputMain {
 		System.out.println("\n ** Message: " + userInput + "\n");
 		return userInput;
 	}
+	private static String registerClass() throws IOException {
+		String userInput = "";
+		System.out.println("\nEnter student ID and press return (Ex. 20131234)>> ");
+		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println("\nEnter course ID and press return (Ex. 12345)>> ");
+		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println("\n ** Message: " + userInput + "\n");
+		return userInput;
+	}
 	@SuppressWarnings("unused")
 	private static String setStudentId() throws IOException {
 		System.out.println("\nEnter student ID and press return (Ex. 20131234)>> ");
@@ -128,6 +141,7 @@ public class ClientInputMain {
 		System.out.println("4. Register a new Course");
 		System.out.println("5. Delete a Student");
 		System.out.println("6. Delete a Course");
+		System.out.println("7. Class Registration");
 		System.out.println("0. Quit the system");
 		System.out.print("\n Choose No.: ");
 	}

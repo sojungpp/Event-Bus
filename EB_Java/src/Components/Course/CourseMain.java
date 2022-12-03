@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.util.ArrayList;
 
+import Components.Registration.Registration;
 import Components.Student.Student;
 import Components.Student.StudentComponent;
 import Framework.Event;
@@ -46,6 +48,10 @@ public class CourseMain {
 					eventBus.unRegister(componentId);
 					done = true;
 					break;
+				case RegisterClass:
+					printLogEvent("Get", event);
+					eventBus.sendEvent(new Event(EventId.CourseInfo, getCourseInfo(coursesList, event.getMessage())));
+					break;
 				case DeleteCourses:
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteCourse(coursesList, event.getMessage())));
@@ -55,6 +61,14 @@ public class CourseMain {
 				}
 			}
 		}
+	}
+	private static String getCourseInfo(CourseComponent coursesList, String message) {
+		Registration registration = new Registration(message);
+		String courseId = registration.getRegisterCourse().get(0);
+		for (int i = 0; i < coursesList.vCourse.size(); i++) {
+			Course course = (Course) coursesList.vCourse.get(i);
+			if(course.match(courseId)) return course.toString();
+		} return null;
 	}
 	private static String deleteCourse(CourseComponent coursesList, String courseId) {
 		for (int i = 0; i < coursesList.vCourse.size(); i++) {

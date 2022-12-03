@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 
+import Components.Course.Course;
+import Components.Course.CourseComponent;
+import Components.Registration.Registration;
 import Framework.Event;
 import Framework.EventId;
 import Framework.EventQueue;
@@ -45,6 +48,10 @@ public class StudentMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteStudent(studentsList, event.getMessage())));
 					break;
+				case RegisterClass:
+					printLogEvent("Get", event);
+					eventBus.sendEvent(new Event(EventId.StudentInfo, getStudentInfo(studentsList, event.getMessage())));
+					break;
 				case QuitTheSystem:
 					printLogEvent("Get", event);
 					eventBus.unRegister(componentId);
@@ -55,6 +62,14 @@ public class StudentMain {
 				}
 			}
 		}
+	}
+	private static String getStudentInfo(StudentComponent studentsList, String message) {
+		Registration registration = new Registration(message);
+		String studentId = registration.getStudentId();
+		for (int i = 0; i < studentsList.vStudent.size(); i++) {
+			Student student = (Student) studentsList.vStudent.get(i);
+			if(student.match(studentId)) return student.getString();
+		} return null;
 	}
 	private static String deleteStudent(StudentComponent studentsList, String studentId) {
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {
