@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import Components.Course.Course;
 import Components.Student.Student;
-import Components.Student.StudentComponent;
 import Framework.Event;
 import Framework.EventId;
 import Framework.EventQueue;
@@ -45,17 +44,20 @@ public class RegistrationMain {
 				switch (event.getEventId()) {
 				case RegisterClass:
 					registrationInfo = event.getMessage();
+					eventBus.sendEvent(new Event(EventId.CheckStudent, event.getMessage()));
+					eventBus.sendEvent(new Event(EventId.CheckCourse, event.getMessage()));
+					eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
 					break;
-				case CourseInfo:
-					checkCourseValidation = true;
-					printLogEvent("Get", event);
-					courseInfo = event.getMessage();
-					break;
-				case StudentInfo:
+				case StudentInfoForRegistration:
 					checkStudentValidation = true;
 					printLogEvent("Get", event);
 					studentInfo = event.getMessage();
-					eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
+					break;
+				case CourseInfoForRegistration:
+					checkCourseValidation = true;
+					printLogEvent("Get", event);
+					courseInfo = event.getMessage();
+//					eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
 					break;
 				case QuitTheSystem:
 					eventBus.unRegister(componentId);
@@ -64,19 +66,13 @@ public class RegistrationMain {
 				default:
 					break;
 				}
-				if(checkCourseValidation==true && checkStudentValidation==true) {
-					System.out.print("수강신청시작1");
-					eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
-				}
-			}
-			if(checkCourseValidation==true && checkStudentValidation==true) {
-				System.out.print("수강신청시작2");
-				eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
+				if(checkStudentValidation==true && checkCourseValidation==true) eventBus.sendEvent(new Event(EventId.ClientOutput, registerClass(registrationList)));
 			}
 		}
 	}
 	// event를 통해 student에서 student유무 체크, course에서 course유무 체크, 받아온 것을 바탕으로 registration에서 선수과목 체크
 	private static String registerClass(RegistrationComponent registrationList) {
+		
 		Registration registration = new Registration(registrationInfo);
 		if(studentInfo==null) return "존재하지 않는 학생입니다.";
 		if(courseInfo==null) return "존재하지 않는 과목입니다.";

@@ -48,9 +48,9 @@ public class StudentMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteStudent(studentsList, event.getMessage())));
 					break;
-				case RegisterClass:
+				case CheckStudent:
 					printLogEvent("Get", event);
-					eventBus.sendEvent(new Event(EventId.StudentInfo, getStudentInfo(studentsList, event.getMessage())));
+					eventBus.sendEvent(new Event(EventId.StudentInfoForRegistration, getStudentInfo(studentsList, event.getMessage())));
 					break;
 				case QuitTheSystem:
 					printLogEvent("Get", event);

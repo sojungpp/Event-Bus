@@ -44,17 +44,17 @@ public class CourseMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, registerCourse(coursesList, event.getMessage())));
 					break;
-				case QuitTheSystem:
-					eventBus.unRegister(componentId);
-					done = true;
-					break;
-				case RegisterClass:
+				case CheckCourse:
 					printLogEvent("Get", event);
-					eventBus.sendEvent(new Event(EventId.CourseInfo, getCourseInfo(coursesList, event.getMessage())));
+					eventBus.sendEvent(new Event(EventId.CourseInfoForRegistration, getCourseInfo(coursesList, event.getMessage())));
 					break;
 				case DeleteCourses:
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteCourse(coursesList, event.getMessage())));
+					break;
+				case QuitTheSystem:
+					eventBus.unRegister(componentId);
+					done = true;
 					break;
 				default:
 					break;
@@ -67,7 +67,7 @@ public class CourseMain {
 		String courseId = registration.getRegisterCourse().get(0);
 		for (int i = 0; i < coursesList.vCourse.size(); i++) {
 			Course course = (Course) coursesList.vCourse.get(i);
-			if(course.match(courseId)) return course.toString();
+			if(course.match(courseId)) return course.getString();
 		} return null;
 	}
 	private static String deleteCourse(CourseComponent coursesList, String courseId) {
