@@ -23,7 +23,7 @@ public class StudentMain {
 		long componentId = eventBus.register();
 		System.out.println("** StudentMain(ID:" + componentId + ") is successfully registered. \n");
 
-		StudentComponent studentsList = new StudentComponent("Students.txt");
+		StudentComponent studentsList = new StudentComponent("C:\\\\\\\\2022-2\\\\\\\\Å¬¼­\\\\\\\\EB_Java\\\\\\\\src\\\\\\\\Students.txt");
 		Event event = null;
 		boolean done = false;
 		while (!done) {
@@ -33,7 +33,8 @@ public class StudentMain {
 				e.printStackTrace();
 			}
 			EventQueue eventQueue = eventBus.getEventQueue(componentId);
-			for (int i = 0; i < eventQueue.getSize(); i++) {
+			int size = eventQueue.getSize();
+			for (int i = 0; i < size; i++) {
 				event = eventQueue.getEvent();
 				switch (event.getEventId()) {
 				case ListStudents:
@@ -48,9 +49,9 @@ public class StudentMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteStudent(studentsList, event.getMessage())));
 					break;
-				case CheckStudent:
+				case StudentInfoForRegistration:
 					printLogEvent("Get", event);
-					eventBus.sendEvent(new Event(EventId.StudentInfoForRegistration, getStudentInfo(studentsList, event.getMessage())));
+					eventBus.sendEvent(new Event(EventId.CourseInfoForRegistration, getStudentInfo(studentsList, event.getMessage())));
 					break;
 				case QuitTheSystem:
 					printLogEvent("Get", event);
@@ -68,8 +69,8 @@ public class StudentMain {
 		String studentId = registration.getStudentId();
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {
 			Student student = (Student) studentsList.vStudent.get(i);
-			if(student.match(studentId)) return student.getString();
-		} return null;
+			if(student.match(studentId)) return message + "/" + student.getString();
+		} return message + "/noInfo";
 	}
 	private static String deleteStudent(StudentComponent studentsList, String studentId) {
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {

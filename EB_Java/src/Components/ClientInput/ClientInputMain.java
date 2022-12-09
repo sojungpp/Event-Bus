@@ -51,8 +51,8 @@ public class ClientInputMain {
 					printLogSend(EventId.DeleteCourses);
 					break;
 				case "7":
-					eventBus.sendEvent(new Event(EventId.RegisterClass, registerClass()));
-					printLogSend(EventId.RegisterClass);
+					eventBus.sendEvent(new Event(EventId.StudentInfoForRegistration, registerClass()));
+					printLogSend(EventId.StudentInfoForRegistration);
 					break;
 				case "0":
 					eventBus.sendEvent(new Event(EventId.QuitTheSystem, "Quit the system!!!"));

@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.util.ArrayList;
 
+import Components.Common.RegistrationData;
 import Components.Registration.Registration;
 import Components.Student.Student;
 import Components.Student.StudentComponent;
@@ -18,12 +19,13 @@ import Framework.EventQueue;
 import Framework.RMIEventBus;
 
 public class CourseMain {
+	
 	public static void main(String[] args) throws FileNotFoundException, IOException, NotBoundException {
 		RMIEventBus eventBus = (RMIEventBus) Naming.lookup("EventBus");
 		long componentId = eventBus.register();
 		System.out.println("CourseMain (ID:" + componentId + ") is successfully registered...");
 
-		CourseComponent coursesList = new CourseComponent("Courses.txt");
+		CourseComponent coursesList = new CourseComponent("C:\\\\\\\\\\\\\\\\2022-2\\\\\\\\\\\\\\\\Å¬¼­\\\\\\\\\\\\\\\\EB_Java\\\\\\\\\\\\\\\\src\\\\\\\\\\\\\\\\Courses.txt");
 		Event event = null;
 		boolean done = false;
 		while (!done) {
@@ -33,7 +35,8 @@ public class CourseMain {
 				e.printStackTrace();
 			}
 			EventQueue eventQueue = eventBus.getEventQueue(componentId);
-			for (int i = 0; i < eventQueue.getSize(); i++) {
+			int size = eventQueue.getSize();
+			for (int i = 0; i < size; i++) {
 				event = eventQueue.getEvent();
 				switch (event.getEventId()) {
 				case ListCourses:
@@ -44,9 +47,9 @@ public class CourseMain {
 					printLogEvent("Get", event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, registerCourse(coursesList, event.getMessage())));
 					break;
-				case CheckCourse:
+				case CourseInfoForRegistration:
 					printLogEvent("Get", event);
-					eventBus.sendEvent(new Event(EventId.CourseInfoForRegistration, getCourseInfo(coursesList, event.getMessage())));
+					eventBus.sendEvent(new Event(EventId.RegisterClass, getCourseInfo(coursesList, event.getMessage())));
 					break;
 				case DeleteCourses:
 					printLogEvent("Get", event);
@@ -63,12 +66,18 @@ public class CourseMain {
 		}
 	}
 	private static String getCourseInfo(CourseComponent coursesList, String message) {
-		Registration registration = new Registration(message);
-		String courseId = registration.getRegisterCourse().get(0);
+		System.out.println("getCourseInfo: " + message);
+		String courseId = getCourseId(message);
 		for (int i = 0; i < coursesList.vCourse.size(); i++) {
 			Course course = (Course) coursesList.vCourse.get(i);
-			if(course.match(courseId)) return course.getString();
-		} return null;
+			if(course.match(courseId)) return message+"/"+course.getString();
+		} return message+"/noInfo";
+	}
+	private static String getCourseId(String message) {
+		String[] split = message.split("/");
+		String registrationInfo = split[0];
+		Registration registration = new Registration(registrationInfo);
+		return registration.getRegisterCourse().get(0);
 	}
 	private static String deleteCourse(CourseComponent coursesList, String courseId) {
 		for (int i = 0; i < coursesList.vCourse.size(); i++) {
