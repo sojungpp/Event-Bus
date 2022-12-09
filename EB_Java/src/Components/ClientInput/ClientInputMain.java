@@ -11,15 +11,16 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import Common.Constants;
 import Framework.Event;
 import Framework.EventId;
 import Framework.RMIEventBus;
 
 public class ClientInputMain {
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
-		RMIEventBus eventBus = (RMIEventBus) Naming.lookup("EventBus");
+		RMIEventBus eventBus = (RMIEventBus) Naming.lookup(Constants.EVENT_BUS);
 		long componentId = eventBus.register();
-		System.out.println("** ClientInputMain(ID:" + componentId + ") is successfully registered. \n");
+		System.out.println(Constants.CLIENT_INPUT_MAIN + componentId + Constants.PARENTHESIS + Constants.SUCCESFULLY_REGISTERED);
 		
 		boolean done = false;
 		while (!done) {
@@ -55,7 +56,7 @@ public class ClientInputMain {
 					printLogSend(EventId.StudentInfoForRegistration);
 					break;
 				case "0":
-					eventBus.sendEvent(new Event(EventId.QuitTheSystem, "Quit the system!!!"));
+					eventBus.sendEvent(new Event(EventId.QuitTheSystem, Constants.QUIT_SYSTEM));
 					printLogSend(EventId.QuitTheSystem);
 					eventBus.unRegister(componentId);
 					done = true;
@@ -69,83 +70,78 @@ public class ClientInputMain {
 		}
 	}
 	private static String makeStudentInfo() throws IOException {
-		String userInput = "";
-		System.out.println("\nEnter student ID and press return (Ex. 20131234)>> ");
+		String userInput = Constants.BLANK;
+		System.out.println(Constants.INPUT_STUDENT_ID);
 		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\nEnter family name and press return (Ex. Hong)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\nEnter first name and press return (Ex. Gildong)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\nEnter department and press return (Ex. CS)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println(
-				"\nEnter a list of IDs (put a space between two different IDs) of the completed courses and press return >> ");
-		System.out.println("(Ex. 17651 17652 17653 17654)");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\n ** Message: " + userInput + "\n");
+		System.out.println(Constants.INPUT_FAMILY_NAME);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.INPUT_FIRST_NAME);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.INPUT_DEPARTMENT);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.INPUT_COMPLETED_COURSE_ID);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.MESSAGE + userInput + Constants.LINE_BREAK);
 		return userInput;
 	}
 	private static String makeCourseInfo() throws IOException {
-		String userInput = "";
-		System.out.println("\nEnter course ID and press return (Ex. 12345)>> ");
+		String userInput = Constants.BLANK;
+		System.out.println(Constants.INPUT_COURSE_ID);
 		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\nEnter the family name of the instructor and press return (Ex. Hong)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println(
-				"\nEnter the name of the course ( substitute a space with ab underbar(_) ) and press return (Ex. C++_Programming)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println(
-				"\nEnter a list of IDs (put a space between two different IDs) of prerequisite courses and press return >> ");
-		System.out.println("(Ex. 12345 17651)");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\n ** Message: " + userInput + "\n");
+		System.out.println(Constants.INPUT_INSTRUCTOR_FAMILY_NAME);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.INPUT_COURSE_NAME);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.INPUT_PREREQUISITE_ID);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.MESSAGE + userInput + Constants.LINE_BREAK);
 		return userInput;
 	}
 	private static String deleteStudentInfo() throws IOException {
-		String userInput = "";
-		System.out.println("\nEnter student ID and press return (Ex. 12345)>> ");
+		String userInput = Constants.BLANK;
+		System.out.println(Constants.INPUT_STUDENT_ID);
 		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\n ** Message: " + userInput + "\n");
+		System.out.println(Constants.MESSAGE + userInput + Constants.LINE_BREAK);
 		return userInput;
 	}
 	private static String deleteCourseInfo() throws IOException {
-		String userInput = "";
-		System.out.println("\nEnter course ID and press return (Ex. 12345)>> ");
+		String userInput = Constants.BLANK;
+		System.out.println(Constants.INPUT_COURSE_ID);
 		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\n ** Message: " + userInput + "\n");
+		System.out.println(Constants.MESSAGE + userInput + Constants.LINE_BREAK);
 		return userInput;
 	}
 	private static String registerClass() throws IOException {
-		String userInput = "";
-		System.out.println("\nEnter student ID and press return (Ex. 20131234)>> ");
+		String userInput = Constants.BLANK;
+		System.out.println(Constants.INPUT_STUDENT_ID);
 		userInput = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\nEnter course ID and press return (Ex. 12345)>> ");
-		userInput += " " + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-		System.out.println("\n ** Message: " + userInput + "\n");
+		System.out.println(Constants.INPUT_COURSE_ID);
+		userInput += Constants.SPACING + new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
+		System.out.println(Constants.MESSAGE + userInput + Constants.LINE_BREAK);
 		return userInput;
 	}
 	@SuppressWarnings("unused")
 	private static String setStudentId() throws IOException {
-		System.out.println("\nEnter student ID and press return (Ex. 20131234)>> ");
+		System.out.println(Constants.INPUT_STUDENT_ID);
 		return new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
 	}
 	@SuppressWarnings("unused")
 	private static String setCourseId() throws IOException {
-		System.out.println("\nEnter course ID and press return (Ex. 12345)>> ");
+		System.out.println(Constants.INPUT_COURSE_ID);
 		return new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
 	}
 	private static void writeMenu() {
-		System.out.println("1. List Students");
-		System.out.println("2. List Courses");
-		System.out.println("3. Register a new Student");
-		System.out.println("4. Register a new Course");
-		System.out.println("5. Delete a Student");
-		System.out.println("6. Delete a Course");
-		System.out.println("7. Class Registration");
-		System.out.println("0. Quit the system");
-		System.out.print("\n Choose No.: ");
+		System.out.println(Constants.INITIAL_MENU_1);
+		System.out.println(Constants.INITIAL_MENU_2);
+		System.out.println(Constants.INITIAL_MENU_3);
+		System.out.println(Constants.INITIAL_MENU_4);
+		System.out.println(Constants.INITIAL_MENU_5);
+		System.out.println(Constants.INITIAL_MENU_6);
+		System.out.println(Constants.INITIAL_MENU_7);
+		System.out.println(Constants.INITIAL_MENU_0);
+		System.out.print(Constants.INITIAL_MENU_CHOOSE);
 	}
 	private static void printLogSend(EventId eventId) {
-		System.out.println("\n** Sending an event(ID:" + eventId + ")\n");
+		System.out.println(Constants.SEND_EVENT_ID + eventId + Constants.PARENTHESIS + Constants.LINE_BREAK);
 	}
 }

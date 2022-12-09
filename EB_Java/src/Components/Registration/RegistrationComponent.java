@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Common.Constants;
+
 
 public class RegistrationComponent {
 	protected ArrayList<Registration> vRegistration;
@@ -15,7 +17,7 @@ public class RegistrationComponent {
 		this.vRegistration = new ArrayList<Registration>();
 		while (bufferedReader.ready()) {
 			String registrationInfo = bufferedReader.readLine();
-			if (!registrationInfo.equals("")) this.vRegistration.add(new Registration(registrationInfo));
+			if (!registrationInfo.equals(Constants.BLANK)) this.vRegistration.add(new Registration(registrationInfo));
 		}
 		bufferedReader.close();
 	}

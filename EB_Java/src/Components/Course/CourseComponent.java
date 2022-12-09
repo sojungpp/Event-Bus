@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Common.Constants;
+
 public class CourseComponent {
     protected ArrayList<Course> vCourse;
 
@@ -17,7 +19,7 @@ public class CourseComponent {
         this.vCourse  = new ArrayList<Course>();
         while (bufferedReader.ready()) {
             String courseInfo = bufferedReader.readLine();
-            if(!courseInfo.equals("")) this.vCourse.add(new Course(courseInfo));
+            if(!courseInfo.equals(Constants.BLANK)) this.vCourse.add(new Course(courseInfo));
         }    
         bufferedReader.close();
     }

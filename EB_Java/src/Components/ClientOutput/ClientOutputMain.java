@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import Common.Constants;
 import Framework.Event;
 import Framework.EventId;
 import Framework.EventQueue;
@@ -16,9 +17,9 @@ import Framework.RMIEventBus;
 
 public class ClientOutputMain {
 	public static void main(String[] args) throws RemoteException, IOException, NotBoundException {
-		RMIEventBus eventBusInterface = (RMIEventBus) Naming.lookup("EventBus");
+		RMIEventBus eventBusInterface = (RMIEventBus) Naming.lookup(Constants.EVENT_BUS);
 		long componentId = eventBusInterface.register();
-		System.out.println("** ClientOutputMain (ID:" + componentId + ") is successfully registered...");
+		System.out.println(Constants.CLIENT_OUTPUT_MAIN + componentId + Constants.PARENTHESIS + Constants.SUCCESFULLY_REGISTERED);
 		
 		Event event = null;
 		boolean done = false;

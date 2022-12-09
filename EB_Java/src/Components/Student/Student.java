@@ -7,6 +7,8 @@ package Components.Student;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import Common.Constants;
+
 public class Student {
 	protected String studentId;
 	protected String name;
@@ -17,7 +19,7 @@ public class Student {
 		StringTokenizer stringTokenizer = new StringTokenizer(inputString);
 		this.studentId = stringTokenizer.nextToken();
 		this.name = stringTokenizer.nextToken();
-		this.name = this.name + " " + stringTokenizer.nextToken();
+		this.name = this.name + Constants.SPACING + stringTokenizer.nextToken();
 		this.department = stringTokenizer.nextToken();
 		while (stringTokenizer.hasMoreTokens()) {
 			this.completedCoursesList.add(stringTokenizer.nextToken());
@@ -33,9 +35,9 @@ public class Student {
 		return this.completedCoursesList;
 	}
 	public String getString() {
-		String stringReturn = this.studentId + " " + this.name + " " + this.department;
+		String stringReturn = this.studentId + Constants.SPACING + this.name + Constants.SPACING + this.department;
 		for (int i = 0; i < this.completedCoursesList.size(); i++) 
-			stringReturn += " " + this.completedCoursesList.get(i).toString();
+			stringReturn += Constants.SPACING + this.completedCoursesList.get(i).toString();
 		return stringReturn;
 	}
 }

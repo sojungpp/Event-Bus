@@ -42,11 +42,6 @@ public class Course {
         return stringReturn;
     }
 	public ArrayList<String> getPrerequisiteCoursesList() {
-//		String stringReturn = null;
-//		for(int i = 0; i < this.prerequisiteCoursesList.size(); i++) {
-//            stringReturn += " " + this.prerequisiteCoursesList.get(i).toString();
-//        }
-//		return stringReturn;
 		return prerequisiteCoursesList;
 	}
 }

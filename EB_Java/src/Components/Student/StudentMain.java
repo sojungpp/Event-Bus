@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 
+import Common.Constants;
 import Components.Course.Course;
 import Components.Course.CourseComponent;
 import Components.Registration.Registration;
@@ -19,11 +20,11 @@ import Framework.RMIEventBus;
 
 public class StudentMain {
 	public static void main(String args[]) throws FileNotFoundException, IOException, NotBoundException {
-		RMIEventBus eventBus = (RMIEventBus) Naming.lookup("EventBus");
+		RMIEventBus eventBus = (RMIEventBus) Naming.lookup(Constants.EVENT_BUS);
 		long componentId = eventBus.register();
-		System.out.println("** StudentMain(ID:" + componentId + ") is successfully registered. \n");
+		System.out.println(Constants.STUDENT_MAIN + componentId + Constants.SUCCESFULLY_REGISTERED);
 
-		StudentComponent studentsList = new StudentComponent("C:\\\\\\\\2022-2\\\\\\\\클서\\\\\\\\EB_Java\\\\\\\\src\\\\\\\\Students.txt");
+		StudentComponent studentsList = new StudentComponent(Constants.STUDENT_SOURCE_FILE_NAME);
 		Event event = null;
 		boolean done = false;
 		while (!done) {
@@ -38,23 +39,23 @@ public class StudentMain {
 				event = eventQueue.getEvent();
 				switch (event.getEventId()) {
 				case ListStudents:
-					printLogEvent("Get", event);
+					printLogEvent(Constants.LOG_COMMENT_GET, event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, makeStudentList(studentsList)));
 					break;
 				case RegisterStudents:
-					printLogEvent("Get", event);
+					printLogEvent(Constants.LOG_COMMENT_GET, event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, registerStudent(studentsList, event.getMessage())));
 					break;
 				case DeleteStudents:
-					printLogEvent("Get", event);
+					printLogEvent(Constants.LOG_COMMENT_GET, event);
 					eventBus.sendEvent(new Event(EventId.ClientOutput, deleteStudent(studentsList, event.getMessage())));
 					break;
 				case StudentInfoForRegistration:
-					printLogEvent("Get", event);
+					printLogEvent(Constants.LOG_COMMENT_GET, event);
 					eventBus.sendEvent(new Event(EventId.CourseInfoForRegistration, getStudentInfo(studentsList, event.getMessage())));
 					break;
 				case QuitTheSystem:
-					printLogEvent("Get", event);
+					printLogEvent(Constants.LOG_COMMENT_GET, event);
 					eventBus.unRegister(componentId);
 					done = true;
 					break;
@@ -69,33 +70,33 @@ public class StudentMain {
 		String studentId = registration.getStudentId();
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {
 			Student student = (Student) studentsList.vStudent.get(i);
-			if(student.match(studentId)) return message + "/" + student.getString();
-		} return message + "/noInfo";
+			if(student.match(studentId)) return message + Constants.SEPARATOR + student.getString();
+		} return message + Constants.SEPARATOR+Constants.NO_INFORMATION;
 	}
 	private static String deleteStudent(StudentComponent studentsList, String studentId) {
 		for (int i = 0; i < studentsList.vStudent.size(); i++) {
 			Student student = (Student) studentsList.vStudent.get(i);
-			if (student.match(studentId) && studentsList.vStudent.remove(student)) return studentId+" 학생을 삭제했습니다.";
-		} return "존재하지 않는 studentId 입니다.";
+			if (student.match(studentId) && studentsList.vStudent.remove(student)) return studentId+Constants.DELETE_STUDENT;
+		} return Constants.NO_STUDENT_ID;
 	}
 
 	private static String registerStudent(StudentComponent studentsList, String message) {
 		Student  student = new Student(message);
 		if (!studentsList.isRegisteredStudent(student.studentId)) {
 			studentsList.vStudent.add(student);
-			return "This student is successfully added.";
+			return Constants.ADD_STUDENT;
 		} else
-			return "This student is already registered.";
+			return Constants.ALREADY_ADD_STUDENT;
 	}
 	private static String makeStudentList(StudentComponent studentsList) {
-		String returnString = "";
+		String returnString = Constants.BLANK;
 		for (int j = 0; j < studentsList.vStudent.size(); j++) {
-			returnString += studentsList.getStudentList().get(j).getString() + "\n";
+			returnString += studentsList.getStudentList().get(j).getString() + Constants.LINE_BREAK;
 		}
 		return returnString;
 	}
 	private static void printLogEvent(String comment, Event event) {
 		System.out.println(
-				"\n** " + comment + " the event(ID:" + event.getEventId() + ") message: " + event.getMessage());
+				Constants.START_LOG + comment + Constants.EVENT_ID + event.getEventId() + Constants.LOG_MESSAGE + event.getMessage());
 	}
 }

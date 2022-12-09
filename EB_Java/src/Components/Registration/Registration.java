@@ -3,6 +3,8 @@ package Components.Registration;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import Common.Constants;
+
 public class Registration {
 
 	protected String studentId;
@@ -22,7 +24,7 @@ public class Registration {
     }
 
     public String getString() {
-        String stringReturn = this.studentId + " ";
+        String stringReturn = this.studentId + Constants.SPACING;
         for (int i = 0; i < this.registerCoursesList.size(); i++) {
             stringReturn = stringReturn + " " + this.registerCoursesList.get(i).toString();
         }
